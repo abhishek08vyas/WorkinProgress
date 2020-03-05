@@ -1,186 +1,216 @@
-class Employee{
+import pandas as pd
+class Employee:
 
-	bIsLogin = False;
-	private EnLoginUserType enUserType = EnLoginUserType.Admin;
-	// Store user id
-	private String sUserid = "";
-	// Store password
-	private String sPassword = "";
-	private int nLeave = 0;
-	private int nTotalLeave = 10;
-	private int nAcceptedLeave = 0;
-	private int nRejectedLeave = 0;
-	private int nApplyLeave = 0;
-	private String UnderRA = "";
-	boolean bLeaveFlag = false;
-	public boolean isbIsLogin() {
-		return bIsLogin;
-	}
+    def __init__(self):
+        self.leaveid = 0
+        self.bIsLogin = False
+        self.enUserType = "Employee"
+        self.sUserid = ""
+        self.sPassword = ""
+        self.RA = ""
+        self.casualleave = 10
+        self.sickleave = 10
+        self.priveleageleave = 10
+        self.appliedcasualleave = 0
+        self.appliedpriveleageleave = 0
+        self.appliedsickleave = 0
+        self.casualleavestatus = ""
+        self.priveleageleavestatus = ""
+        self.sickleavestatus = ""
+        self.leavedf = pd.DataFrame(columns=['Leaveid', 'Leavetype', 'AppliedLeave', 'Status', 'AcceptedLeave', 'RejectedLeave'])
 
-	public void setbIsLogin(boolean bIsLogin) {
-		this.bIsLogin = bIsLogin;
-	}
+    def isbIsLogin(self):
+        return self.bIsLogin
 
-	public EnLoginUserType getEnUserType() {
-		return enUserType;
-	}
+    def setbIsLogin(self, bIsLogin):
+        self.bIsLogin = bIsLogin
 
-	public void setEnUserType(EnLoginUserType enUserType) {
-		this.enUserType = enUserType;
-	}
+    def getsUserid(self):
+        return self.sUserid
 
-	public String getsUserid() {
-		return sUserid;
-	}
+    def setsUserid(self, sUserid):
+        self.sUserid = sUserid
 
-	public void setsUserid(String sUserid) {
-		this.sUserid = sUserid;
-	}
+    def getsPassword(self):
+        return self.sPassword
 
-	public String getsPassword() {
-		return sPassword;
-	}
+    def setsPassword(self, sPassword):
+        self.sPassword = sPassword
+    def getEnUserType(self):
+        return self.enUserType
 
-	public void setsPassword(String sPassword) {
-		this.sPassword = sPassword;
-	}
+    def setEnUserType(self, enUserType):
+        self.enUserType = enUserType
 
-	public Employee() {
-	}
+    # Set RA
+    def SetRA(self, sRAUnder):
+        self.UnderRA = sRAUnder
 
-	public int GetLeaveTotal() {
-		return this.nTotalLeave;
-	}
+    # Get RA
+    def GetRA(self):
+        return self.UnderRA
 
-	// Set leave
-	public void SetLeave(int nLeave) {
-		this.nLeave = nLeave;
-	}
+    def setcasualleave(self, casualleave):
+        self.casualleave = casualleave
 
-	// Get leave
-	public int GetLeave() {
-		return this.nLeave;
-	}
+    def setsickleave(self, sickleave):
+        self.sickleave = sickleave
 
-	// Set leave
-	public void SetApplyLeave(int nLeave) {
-		this.nApplyLeave = nLeave;
-	}
+    def setpriveleageleave(self, priveleageleave):
+        self.priveleageleave = priveleageleave
 
-	// Get leave
-	public int GetApplyLeave() {
-		return this.nApplyLeave;
-	}
+    def getprivilegeleave(self):
+        return self.priveleageleave
 
-	// Set accepted leave
-	public void SetAcceptedLeave(int nLeave) {
-		this.nAcceptedLeave = nLeave;
-	}
+    def getcasualleave(self):
+        return self.casualleave
 
-	// Get accepted leave
-	public int GetAcceptedLeave() {
-		return this.nAcceptedLeave;
-	}
+    def getsickleave(self):
+        return self.sickleave
 
-	// Set accepted leave
-	public void SetRejectedLeave(int nLeave) {
-		this.nRejectedLeave = nLeave;
-	}
+    def getleaveid(self):
+        return self.leaveid
 
-	// Get accepted leave
-	public int GetRejectedLeave() {
-		return this.nRejectedLeave;
-	}
+    def setleaveid(self, leaveid):
+        self.leaveid = leaveid
 
-	// Set RA
-	public void SetRA(String sRAUnder) {
-		this.UnderRA = sRAUnder;
-	}
+    def setleavedf(self,leavedf):
+        self.leavedf = leavedf
 
-	// Get RA
-	public String GetRA() {
-		return this.UnderRA;
-	}
+    def getleavedf(self):
+        return self.leavedf
 
-	// Set leave flag
-	public void SetLeaveFlag(boolean bLeaveFlag) {
-		this.bLeaveFlag = bLeaveFlag;
-	}
+    # Apply leave for employee
+    def ApplyLeave(self, lstEmpInfo):
+        for employeetemp in lstEmpInfo:
+            print("for here")
+            print(employeetemp.getsUserid())
+            if (employeetemp.getsUserid() == (self.getsUserid())):
+                print("here")
+                leavebool= True
+                while(leavebool):
+                    leavebool = False
+                    print("\n1. SICK")
+                    print("2. privilege")
+                    print("3. CAUSUAL\n")
+                    leave = int(input ("OPT FOR : "))
+                    if(leave==1):
+                        print("IN SICK LEAVE")
+                        print("TOTAL REMAINING SICK LEAVE(S) : ", employeetemp.getsickleave())
+                        print("NO. OF SICK LEAVE(S) YOU WANT : ")
+                        # Store user choice
+                        bIsValidInput = True
+                        while (bIsValidInput):
+                            bIsValidInput = False
+                            nLeaveApply = int(input())
+                            if employeetemp.getsickleave() == 0:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE SICK LEAVE(S).\nYOU HAVE 0 SICK LEAVES LEFT.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = False
+                            if nLeaveApply < 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE POSITIVE.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if nLeaveApply == 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE MORE THAN 0.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if employeetemp.getsickleave() < nLeaveApply:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE THAN ", employeetemp.getsickleave(), " LEAVE(S).")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                        employeetemp.setleaveid(employeetemp.getleaveid()+1)
+                        employeetemp.setsickleave(employeetemp.getsickleave() - nLeaveApply)
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leaveid'] = employeetemp.getleaveid()
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leavetype'] = "Sick"
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'AppliedLeave'] = nLeaveApply
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Status'] = "Pending"
+                        print("----------------- SUCCESSFULLY APPLIED ---------------")
+                    elif leave == 2:
+                        print("IN privilege LEAVE")
+                        print("TOTAL REMAINING privilege LEAVE(S) : ", employeetemp.getprivilegeleave())
+                        # Store user choice
+                        bIsValidInput = True
+                        while (bIsValidInput):
+                            bIsValidInput = False
+                            nLeaveApply = int(input("NO. OF PRIVILEGE LEAVE(S) YOU WANT : "))
+                            if employeetemp.getprivilegeleave() == 0:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE LEAVE(S).\nYOU HAVE 0 LEAVES LEFT.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = False
+                            if nLeaveApply < 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE POSITIVE.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if nLeaveApply == 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE MORE THAN 0.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if employeetemp.getprivilegeleave() < nLeaveApply:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE THAN ", employeetemp.getprivilegeleave(), " LEAVE(S).")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                        employeetemp.setleaveid(employeetemp.getleaveid() + 1)
+                        employeetemp.setpriveleageleave(employeetemp.getprivilegeleave() - nLeaveApply)
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leaveid'] = employeetemp.getleaveid()
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leavetype'] = "Privilege"
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'AppliedLeave'] = nLeaveApply
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Status'] = "Pending"
+                        print("----------------- SUCCESSFULLY APPLIED ---------------")
+                    elif leave == 3:
+                        print("IN CAUSAl LEAVE")
+                        print("TOTAL REMAINING LEAVE(S) : ", employeetemp.getcasualleave())
+                        print()
+                        # Store user choice
+                        bIsValidInput = True
+                        while bIsValidInput:
+                            bIsValidInput = False
+                            nLeaveApply = int(input("NO. OF SICK LEAVE(S) YOU WANT : "))
+                            if employeetemp.getcasualleave() == 0:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE LEAVE(S).\nYOU HAVE 0 LEAVES LEFT.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = False
+                            if nLeaveApply < 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE POSITIVE.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if nLeaveApply == 0:
+                                print("\n------------------------------------------------------")
+                                print("APPLIED LEAVE(S) SHOULD BE MORE THAN 0.")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                            if employeetemp.getcasualleave() < nLeaveApply:
+                                print("\n------------------------------------------------------")
+                                print("YOU CAN'T APPLY FOR MORE THAN ", employeetemp.getcasualleave(), " LEAVE(S).")
+                                print("------------------------------------------------------\n")
+                                bIsValidInput = True
+                        employeetemp.setleaveid(employeetemp.getleaveid() + 1)
+                        employeetemp.setcasualleave(employeetemp.getcasualleave() - nLeaveApply)
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leaveid'] = employeetemp.getleaveid()
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Leavetype'] = "Casual"
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'AppliedLeave'] = nLeaveApply
+                        employeetemp.leavedf.loc[employeetemp.getleaveid(), 'Status'] = "Pending"
+                        print("----------------- SUCCESSFULLY APPLIED ---------------")
+                    else:
+                        print("\n---------- THERE'S NO SUCH OPTION AVAILABLE ----------")
+                    bIsValidInput = True
+        return lstEmpInfo
 
-	// Get leave flag
-	public boolean GetLeaveFlag() {
-		return this.bLeaveFlag;
-	}
+    # Display employee leave report
+    def DisplayLeaveReport(self, lstEmpInfo):
+        print("\n------------------------------------------------------")
+        for employee in lstEmpInfo:
+            if employee.getsUserid() == (self.getsUserid()):
+                print(employee.getleavedf())
 
-	// Apply leave for employee
-	public ArrayList<Employee> ApplyLeave(ArrayList<Employee> lstEmpInfo) {
-		Scanner sUserInput = new Scanner(System.in);
-		for (int i = 0; i < lstEmpInfo.size(); i++) {
-			if (lstEmpInfo.get(i).getsUserid().equals(this.getsUserid()) == true) {
-				System.out.println("TOTAL REMAINING LEAVE(S) : " + lstEmpInfo.get(i).GetLeave());
-				System.out.println("NO. OF LEAVE(S) YOU WANT : ");
-				// Store user choice
-				String sLeaveApply = sUserInput.nextLine();
-				boolean bIsValidInput = false;
-				do {
-					try {
-						int nLeaveApply = Integer.parseInt(sLeaveApply);
-						if (lstEmpInfo.get(i).GetLeave() == 0) {
-							System.out.println("\n------------------------------------------------------");
-							System.out.println("YOU CAN'T APPLY FOR MORE LEAVE(S).\nYOU HAVE 0 LEAVES LEFT.");
-							System.out.println("------------------------------------------------------\n");
-							break;
-						}
-						if (lstEmpInfo.get(i).GetLeave() < nLeaveApply) {
-							System.out.println("\n------------------------------------------------------");
-							System.out.println("YOU CAN'T APPLY FOR MORE THAN "+ lstEmpInfo.get(i).GetLeave() + " LEAVE(S).");
-							System.out.println("------------------------------------------------------\n");
-							break;
-						}
-						if (nLeaveApply < 0) {
-							System.out.println("\n------------------------------------------------------");
-							System.out.println("APPLIED LEAVE(S) SHOULD BE POSITIVE.");
-							System.out.println("------------------------------------------------------\n");
-							break;
-						}
-						if (nLeaveApply == 0) {
-							System.out.println("\n------------------------------------------------------");
-							System.out.println("APPLIED LEAVE(S) SHOULD BE MORE THAN 0.");
-							System.out.println("------------------------------------------------------\n");
-							break;
-						}
-						lstEmpInfo.get(i).SetApplyLeave(nLeaveApply);
-						lstEmpInfo.get(i).SetLeaveFlag(true);
-						System.out.println("----------------- SUCCESSFULLY APPLIED ---------------");
-						bIsValidInput = true;
-					} catch (Exception ex) {
-						System.out.println("---------- ONLY INTEGER VALUE IS ACCEPTABLE ----------");
-						bIsValidInput = false;
-						//continue;
-						break;
-					}
-
-				} while (bIsValidInput != true);
-				break;
-			}
-		}
-		return lstEmpInfo;
-	}
-
-	// Display employee leave report
-	public void DisplayLeaveReport(ArrayList<Employee> lstEmpInfo) {
-
-		System.out.println("\n------------------------------------------------------");
-		for (int i = 0; i < lstEmpInfo.size(); i++) {
-			if (lstEmpInfo.get(i).getsUserid().equals(this.getsUserid()) == true) {
-				System.out.println("NO. OF ACCEPTED LEAVE(S) : " + lstEmpInfo.get(i).GetAcceptedLeave());
-				System.out.println("NO. OF REJECTED LEAVE(S) : " + lstEmpInfo.get(i).GetRejectedLeave());
-				System.out.println("TOTAL REMAINING LEAVE(S) : " + lstEmpInfo.get(i).GetLeave());
-				break;
-			}
-		}
-		System.out.println("------------------------------------------------------\n");
-
-	}
-
-}
+        print("\n------------------------------------------------------\n")

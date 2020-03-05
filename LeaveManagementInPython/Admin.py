@@ -1,78 +1,56 @@
-
-import java.util.ArrayList;
-
-public class Admin {
-
-	private boolean bIsLogin = false;
-	private EnLoginUserType enUserType = EnLoginUserType.Admin;
-	
-	public boolean isbIsLogin() {
-		return bIsLogin;
-	}
-
-	public void setbIsLogin(boolean bIsLogin) {
-		this.bIsLogin = bIsLogin;
-	}
-
-	public Employee addNormalEmployee(String employeeUserName, String employeePassword, String reporting){
-			enUserType = EnLoginUserType.Employee;
-			Employee employee = new Employee();
-			employee.setEnUserType(enUserType);
-			employee.setsUserid(employeeUserName);
-			employee.setsPassword(employeePassword);
-			employee.SetRA(reporting);
-			employee.SetLeave(10);
-			return employee;
-	}
-	
-	public ReportingAuthority addReportingAuthority(String employeeUserName, String employeePassword){
-		enUserType = EnLoginUserType.RA;
-		ReportingAuthority reportingAuthority = new ReportingAuthority();
-		reportingAuthority.setEnUserType(enUserType);
-		reportingAuthority.setsUserid(employeeUserName);
-		reportingAuthority.setsPassword(employeePassword);
-		return reportingAuthority;
-}
-	
-	public ReportingAuthority checkReportingAuthority(String reporting, ArrayList<ReportingAuthority>lstRAInfo ) {
-		
-		if(reporting == null || lstRAInfo.isEmpty()) {
-			return null;
-		}
-		for (int i = 0; i < lstRAInfo.size(); i++) {
-			if (lstRAInfo.get(i).getsUserid() != null) {
-				if (lstRAInfo.get(i).getsUserid().equals(reporting)) {
-					return lstRAInfo.get(i);
-				}
-			}
-		}
-		return null;
-	}
+from Employee import Employee
+from ReportingAuthority import ReportingAuthority
 
 
-	public boolean IsUseridUnique(String sUserid, String sUserType, ArrayList<Employee>lstEmpInfo, ArrayList<ReportingAuthority>lstRAInfo) {
-		if (sUserid == null) {
-			return false;
-		}
+class Admin:
 
-		if (sUserType.equals(EnLoginUserType.Employee.toString()) == true) {
-			for (int i = 0; i < lstEmpInfo.size(); i++) {
-				if (lstEmpInfo.get(i).getsUserid() != null) {
-					if (lstEmpInfo.get(i).getsUserid().equals(sUserid) == true) {
-						return false;
-					}
-				}
-			}
-		} else if (sUserType.equals(EnLoginUserType.RA.toString()) == true) {
-			for (int i = 0; i < lstRAInfo.size(); i++) {
-				if (lstRAInfo.get(i).getsUserid() != null) {
-					if (lstRAInfo.get(i).getsUserid().equals(sUserid) == true) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	} 
+    def __init__(self):
+        self.bIsLogin = False
+        self.enUserType = "Admin"
 
-}
+    def isbIsLogin(self):
+        return self.bIsLogin
+
+    def setbIsLogin(self, bIsLogin):
+        self.bIsLogin = bIsLogin
+
+    def addNormalEmployee(self, employeeUserName, employeePassword, reporting):
+        enUserType = "Employee"
+        employee = Employee()
+        employee.setEnUserType(enUserType)
+        employee.setsUserid(employeeUserName)
+        employee.setsPassword(employeePassword)
+        employee.SetRA(reporting)
+        return employee
+
+    def addReportingAuthority(self, employeeUserName, employeePassword):
+        enUserType = "RA"
+        reportingAuthority = ReportingAuthority()
+        reportingAuthority.setEnUserType(enUserType)
+        reportingAuthority.setsUserid(employeeUserName)
+        reportingAuthority.setsPassword(employeePassword)
+        return reportingAuthority
+
+    def checkReportingAuthority(self, reporting, lstRAInfo):
+        if len(reporting) == 0 or len(lstRAInfo) == 0:
+            return None
+        for reportingauthority in lstRAInfo:
+            if len(reportingauthority.getsUserid()) != 0:
+                if reportingauthority.getsUserid() == reporting:
+                    return reportingauthority
+        return None
+
+    def IsUseridUnique(self, sUserid, sUserType, lstEmpInfo, lstRAInfo):
+        if len(sUserid) == 0:
+            return False
+        if sUserType == "Employee":
+            for employee in lstEmpInfo:
+                if len(employee.getsUserid()) != 0:
+                    if (employee.getsUserid() == sUserid):
+                        return False
+        elif sUserType == "RA":
+            for reportingauthority in lstRAInfo:
+                if len(reportingauthority.getsUserid()) != 0:
+                    if reportingauthority.getsUserid() == sUserid:
+                        return False
+        return True

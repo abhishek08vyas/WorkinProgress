@@ -1,51 +1,43 @@
-import java.util.ArrayList;
+from Employee import Employee
+from ReportingAuthority import ReportingAuthority
 
-public class Login {
 
-	public boolean checkadmin(String userId, String userPassword){
-		if (userId.equals(null) ||userPassword.equals(null) || 
-				!userId.equals("admin") || !userPassword.equals("admin")) {
-			return false;
-		}
-		return true;
-	}
-	// Employee Login
+class Login:
 
-	public Employee employeeLogin(String employeeUserName, String employeePassword, ArrayList<Employee>lstEmpInfo) {
-		if (lstEmpInfo == null || lstEmpInfo.size() == 0) {
-			System.out.println("\nEMPLOYEE USER LIST IS EMPTY.\nCONTACT ADMINISTRATOR TO CREATE NEW EMPLOYEE USER.\n");
-			return null;
-		}
-		for (int i = 0; i < lstEmpInfo.size(); i++) {
-			if (lstEmpInfo.get(i).getsUserid().equals(employeeUserName)
-					&& lstEmpInfo.get(i).getsPassword().equals(employeePassword)) {
-				Employee employee = new Employee();
-				employee.setbIsLogin(true);
-				employee.setEnUserType(EnLoginUserType.Employee);
-				employee.setsUserid(employeeUserName);
-				employee.SetLeave(lstEmpInfo.get(i).GetLeave());
-				return employee;
-			} 
-		}
-		return null;
-	}
+    def __init__(self):
+        pass
 
-	// RA Login
-	public ReportingAuthority RALogin(String raUserName, String raPassword, ArrayList<ReportingAuthority>lstRAInfo) {
-		if (lstRAInfo == null || lstRAInfo.size() == 0) {
-			System.out.println("\nRA USER LIST IS EMPTY.\nCONTACT ADMINISTRATOR TO CREATE NEW REPORTING AUTHORITY USER.\n");
-			return null;
-		}
-		for (int i = 0; i < lstRAInfo.size(); i++) {
-			if (lstRAInfo.get(i).getsUserid().equals(raUserName) == true
-					&& lstRAInfo.get(i).getsPassword().equals(raPassword) == true) {
-				ReportingAuthority reportingAuthority = new ReportingAuthority();
-				reportingAuthority.setbIsLogin(true);
-				reportingAuthority.setEnUserType(EnLoginUserType.RA);
-				reportingAuthority.setsUserid(raUserName);
-				return reportingAuthority;
-			} 
-		}
-		return null;
-	}
-}
+    def checkAdmin(self, userId, userPassword):
+        if userId == "admin" and userPassword == "admin":
+            print("LOGGED IN SUCCESSFULLY!")
+            return True
+        else:
+            print("INVALID CREDENTIALS")
+            return False
+
+    def RALogin(self, raUserName, raPassword, lstRAInfo):
+#         if len(lstRAInfo) == 0:
+#             print("\nRA USER LIST IS EMPTY.\nCONTACT ADMINISTRATOR TO CREATE NEW REPORTING AUTHORITY USER.\n")
+#             return None
+        for reportingauthority in lstRAInfo:
+            if reportingauthority.getsUserid() == raUserName and reportingauthority.getsPassword() == raPassword:
+                reportingAuthority = ReportingAuthority()
+                reportingAuthority.setbIsLogin(True)
+                reportingAuthority.setEnUserType("RA")
+                reportingAuthority.setsUserid(raUserName)
+                return reportingAuthority
+        return None
+
+    def employeeLogin(self, employeeUserName, employeePassword, lstEmpInfo):
+#         if len(lstEmpInfo) == 0:
+#             print("\nEMPLOYEE USER LIST IS EMPTY.\nCONTACT ADMINISTRATOR TO CREATE NEW EMPLOYEE USER.\n")
+#             return None
+
+        for employeetemp in lstEmpInfo:
+            if employeetemp.getsUserid() == employeeUserName and employeetemp.getsPassword() == employeePassword:
+                employee = Employee()
+                employee.setbIsLogin(True)
+                employee.setEnUserType("Employee")
+                employee.setsUserid(employeeUserName)
+                return employee
+        return None

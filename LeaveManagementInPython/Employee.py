@@ -11,13 +11,7 @@ class Employee:
         self.casualleave = 10
         self.sickleave = 10
         self.priveleageleave = 10
-        self.appliedcasualleave = 0
-        self.appliedpriveleageleave = 0
-        self.appliedsickleave = 0
-        self.casualleavestatus = ""
-        self.priveleageleavestatus = ""
-        self.sickleavestatus = ""
-        self.leavedf = pd.DataFrame(columns=['Leaveid', 'Leavetype', 'AppliedLeave', 'Status', 'AcceptedLeave', 'RejectedLeave'])
+        self.leavedf = pd.DataFrame(columns=['Leaveid', 'Leavetype', 'AppliedLeave', 'Status'])
 
     def isbIsLogin(self):
         return self.bIsLogin
@@ -208,9 +202,11 @@ class Employee:
 
     # Display employee leave report
     def DisplayLeaveReport(self, lstEmpInfo):
-        print("\n------------------------------------------------------")
         for employee in lstEmpInfo:
             if employee.getsUserid() == (self.getsUserid()):
+                print("\n------------------------------------------------------")
+                print("You got Casual Leaves: ", employee.getcasualleave())
+                print("You got Sick Leaves: ", employee.getsickleave())
+                print("You got Priveleage Leaves: ", employee.getprivilegeleave())
                 print(employee.getleavedf())
-
-        print("\n------------------------------------------------------\n")
+                print("------------------------------------------------------")

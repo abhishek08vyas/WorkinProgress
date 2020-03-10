@@ -40,85 +40,67 @@ class ReportingAuthority:
             return lstEmpInfo
         # nCount = 0
         bApplyLeaveFlag = False
-        StoreIndex = []
-        i = 0
-        leave = pd.DataFrame ()
-        temp = pd.DataFrame ()
+        leave = pd.DataFrame()
         for employee in lstEmpInfo:
-            if (not employee.getleavedf ().empty) and (employee.GetRA () == (self.getsUserid ())):
-                l = employee.getleavedf ()
-                leave = l.copy ()
-                leave['username'] = employee.getsUserid ()
-                print (leave)
+            if (not employee.getleavedf().empty) and (employee.GetRA () == (self.getsUserid ())):
+                l = employee.getleavedf()
+                x = l.copy()
+                x['username'] = employee.getsUserid()
+                leave = leave.append(x)
+        print(leave)
         empname = ''
         empleave = 0
+        status = ""
         bIsValidSelectEmployee = True
         while (bIsValidSelectEmployee):
             bIsValidSelectEmployee = False
-            print ("\nENTER SELECT FROM THE ABOVE LIST : ")
+            print("\nENTER SELECT FROM THE ABOVE LIST : ")
             # Store user choice
-            empname = input ("ENTER username :")
-            empleave = int (input ("ENTER LEAVE ID: "))
-            temp = leave.loc[(leave['username'] == empname) & (empleave == leave['Leaveid'])]
+            empname = input("ENTER username :")
+            empleave = int(input ("ENTER LEAVE ID: "))
+            temp = leave[(leave.username == empname) & (leave.Leaveid == empleave)]
             if (temp.empty):
                 print ("------------ SELECTED INPUT NOT IN LIST --------------")
                 bIsValidSelectEmployee = True
-        bIsValidSelectEmployee = True
-        while (bIsValidSelectEmployee):
-            bIsValidSelectEmployee = False
-            nAcceptLeave = int (input ("ENTER NO. OF ACCEPTED LEAVES : "))
-            nApplyLeave = temp['AppliedLeave'].item ()
-            print (temp['AppliedLeave'].item ())
-            if temp['AppliedLeave'].item () < nAcceptLeave:
-                print ("\n------------------------------------------------------")
-                print ("YOU CANNOT ACCEPT MORE THAN ", nApplyLeave, " LEAVE(S).")
-                print ("------------------------------------------------------\n")
-                bIsValidSelectEmployee = True
-            elif (nAcceptLeave <= 0):
-                print ("\n------------------------------------------------------")
-                print ("ACCEPTED LEAVE(S) SHOULD BE POSITIVE AND GREATER THAN 0.")
-                print ("------------------------------------------------------\n")
-                bIsValidSelectEmployee = True
             else:
-                rejectedleaves = temp['AppliedLeave'].item () - nAcceptLeave
-                if (rejectedleaves > 0):
-                    print ("ACCEPTED LEAVE(S) ARE : ", nAcceptLeave, " out of ", temp['AppliedLeave'].item ())
-                    temp.loc[temp['Leaveid'], 'Status'] = "Some Rejected"
-                    temp.loc[temp['Leaveid'], 'AcceptedLeave'] = nAcceptLeave
-                    temp.loc[temp['Leaveid'], 'RejectedLeave'] = rejectedleaves
-                    print (temp)
+                print(temp)
+                leavestatus = int (input ("ENTER 0 to reject leave / 1 to accept leave : "))
+                if leavestatus == 1:
+                    status = "Approved"
+                    print("-------- LEAVE(S) IS/ARE APPROVED SUCCESSFULLY ---------")
+                elif leavestatus == 0:
+                    status = "Rejected"
+                    print("-------- LEAVE(S) IS/ARE REJECTED SUCCESSFULLY ---------")
                 else:
-                    print ("-------- LEAVE(S) IS/ARE ACCEPTED SUCCESSFULLY ---------")
-                    temp.loc[temp['Leaveid'], 'Status'] = "Approved"
-                    temp.loc[temp['Leaveid'], 'AcceptedLeave'] = nAcceptLeave
-                    temp.loc[temp['Leaveid'], 'RejectedLeave'] = rejectedleaves
-                    print (temp)
-                bIsValidSelectEmployee = False
+                    print("-------- ENTER PROPER INPUT ---------")
+                    bIsValidSelectEmployee = True
         for employee in lstEmpInfo:
-            if (employee.getsUserid () == temp['username'].item ()):
-                leave = employee.getleavedf ()
-                if (leave['Leaveid'] == temp['Leaveid'] and leave['Leavetype'] == temp['Leavetype']):
-                    leave['Status'] = temp['Status']
-                    leave['AcceptedLeave'] = temp['AcceptedLeave']
-                    leave['RejectedLeave'] = temp['RejectedLeave']
-                    addedleave = leave['RejectedLeave'].values.item ()
-                    print (leave['RejectedLeave'].item ())
-                    print (leave['RejectedLeave'].values.item ())
-                    if (addedleave > 0):
-                        if (leave['Leavetype'] == "Sick"):
-                            employee.setsickleave (employee.getsickleave () + addedleave)
-                        elif (leave['Leavetype'] == "Casual"):
-                            employee.setcasualleave (employee.getcasualleave () + addedleave)
+            if employee.getsUserid() == empname:
+                leave = employee.getleavedf()
+                leave.at[empleave,'Status'] = status
+                print(leave)
+                #print(temp)
+                if status == "Rejected":
+                    print("Reectedklkdsl;;",leave['AppliedLeave'].values[0])
+                    addedleave = leave['AppliedLeave'].values[0]
+                    type = leave['Leavetype'].values[0]
+                    print ("addedleave;;", addedleave)
+                    if addedleave > 0:
+                        if type == "Sick":
+                            employee.setsickleave(employee.getsickleave() + addedleave)
+                        elif type == "Casual":
+                            employee.setcasualleave(employee.getcasualleave() + addedleave)
                         else:
-                            employee.setpriveleageleave (employee.getprivilegeleave () + addedleave)
-                print (employee.getleavedf ())
+                            employee.setpriveleageleave(employee.getprivilegeleave() + addedleave)
         return lstEmpInfo
 
     # Display employee report
     def DisplayEmployeeReport(self, lstEmpInfo):
+        leave = pd.DataFrame()
         for employee in lstEmpInfo:
-            if (not employee.getleavedf ().empty) and (employee.GetRA () == (self.getsUserid ())):
-                l = employee.getleavedf ()
-                leave = l.copy ()
-                leave['username'] = employee.getsUserid ()
-                print (leave)
+            if (not employee.getleavedf().empty) and (employee.GetRA() == (self.getsUserid ())):
+                l = employee.getleavedf()
+                x = l.copy()
+                x['username'] = employee.getsUserid()
+                leave = leave.append(x)
+        print(leave)

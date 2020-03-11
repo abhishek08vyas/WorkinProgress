@@ -45,10 +45,26 @@ class ReportingAuthority:
             if (not employee.getleavedf().empty) and (employee.GetRA () == (self.getsUserid ())):
                 l = employee.getleavedf()
                 x = l.copy()
-                print(x['Status'].values[0])
-                if (x['Status'].values[0] == "Pending"):
-                    x['username'] = employee.getsUserid()
-                    leave = leave.append(x)
+                i = 0
+                count = x['Status'].count()
+                print(count)
+                if count>1:
+                    while(i<count):
+                        if x['Status'].values[i] == "Pending":
+                            x.at[i+1,'username'] = employee.getsUserid()
+                            leave = leave.append(x.loc[i+1])
+                            print(i)
+                            print(leave)
+                        i = i + 1
+                else:
+                    if x['Status'].values[i] == "Pending":
+                        x['username'] = employee.getsUserid()
+                        leave = leave.append(x)
+        if leave.empty:
+            print("--------------- LEAVE LIST IS EMPTY ---------------")
+            print("------------ NO ONE HAVE APPLIED FOR LEAVE --------")
+            return lstEmpInfo
+        leave = leave.dropna()
         print(leave)
         empname = ''
         empleave = 0

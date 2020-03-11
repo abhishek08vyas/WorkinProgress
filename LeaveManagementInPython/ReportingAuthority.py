@@ -45,8 +45,10 @@ class ReportingAuthority:
             if (not employee.getleavedf().empty) and (employee.GetRA () == (self.getsUserid ())):
                 l = employee.getleavedf()
                 x = l.copy()
-                x['username'] = employee.getsUserid()
-                leave = leave.append(x)
+                print(x['Status'].values[0])
+                if (x['Status'].values[0] == "Pending"):
+                    x['username'] = employee.getsUserid()
+                    leave = leave.append(x)
         print(leave)
         empname = ''
         empleave = 0
@@ -81,10 +83,8 @@ class ReportingAuthority:
                 print(leave)
                 #print(temp)
                 if status == "Rejected":
-                    print("Reectedklkdsl;;",leave['AppliedLeave'].values[0])
                     addedleave = leave['AppliedLeave'].values[0]
                     type = leave['Leavetype'].values[0]
-                    print ("addedleave;;", addedleave)
                     if addedleave > 0:
                         if type == "Sick":
                             employee.setsickleave(employee.getsickleave() + addedleave)

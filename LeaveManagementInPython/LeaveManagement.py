@@ -184,7 +184,6 @@ if __name__ == '__main__':
                 sChoice = int(input())
                 # Show Report of the Employees working under RA case
                 if (sChoice == 1):
-#                     print("EMPLOYEE PASSWORD : " + reportingAuthority.getsUserid())
                     reportingAuthority.DisplayEmployeeReport(lstEmpInfo)
                     bIsValidChoice = True
                 #Grant Leaves of RA case

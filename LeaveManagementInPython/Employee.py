@@ -77,10 +77,7 @@ class Employee:
     # Apply leave for employee
     def ApplyLeave(self, lstEmpInfo):
         for employeetemp in lstEmpInfo:
-            print("for here")
-            print(employeetemp.getsUserid())
             if (employeetemp.getsUserid() == (self.getsUserid())):
-                print("here")
                 leavebool= True
                 while(leavebool):
                     leavebool = False
